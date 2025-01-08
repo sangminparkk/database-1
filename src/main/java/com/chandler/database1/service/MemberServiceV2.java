@@ -46,6 +46,7 @@ public class MemberServiceV2 {
         if (con != null) {
             try {
                 con.setAutoCommit(true); //TODO: 커넥션 풀을 고려해서 setAutoCommit을 true 설정 필요
+                con.close();
             } catch (Exception e) {
                 log.info("error", e);
             }
