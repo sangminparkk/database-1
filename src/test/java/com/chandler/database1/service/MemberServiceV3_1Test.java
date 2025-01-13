@@ -30,7 +30,7 @@ class MemberServiceV3_1Test {
     void before() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USERNAME, PASSWORD);
         memberRepository = new RepositoryV3(dataSource);
-        PlatformTransactionManager transactionManager = new DataSourceTransactionManager();
+        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
         memberService = new MemberServiceV3_1(transactionManager, memberRepository);
     }
 
@@ -70,9 +70,7 @@ class MemberServiceV3_1Test {
         memberRepository.save(toMember);
 
         //when
-        log.info("START TX");
         assertThrows(IllegalStateException.class, () -> memberService.accountTransfer(fromMember.getMember_Id(), toMember.getMember_Id(), 2000));
-        log.info("END TX");
         Member fromId = memberRepository.findById(fromMember.getMember_Id());
         Member toId = memberRepository.findById(toMember.getMember_Id());
 
