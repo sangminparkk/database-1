@@ -1,18 +1,29 @@
 package com.chandler.database1.exception.basic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.net.ConnectException;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Slf4j
 public class UncheckedAppTest {
 
     @Test
     void unchecked(){
         Controller controller = new Controller();
         assertThrows(RuntimeSQLException.class, controller::request);
+    }
+
+    @Test
+    void print_ex(){
+        Controller controller = new Controller();
+        try {
+            controller.request();
+        } catch (Exception e) {
+            log.info("ex", e);
+        }
     }
 
     static class Controller {
@@ -44,7 +55,7 @@ public class UncheckedAppTest {
             try {
                 runSQL();
             } catch (SQLException e) {
-                throw new RuntimeSQLException(e); //밖으로 던질때 Runtime으로 변경해서 던짐
+                throw new RuntimeSQLException(); //TODO: 실무에서 자주 실수하는 유형
             }
         }
 
@@ -60,6 +71,11 @@ public class UncheckedAppTest {
     }
 
     static class RuntimeSQLException extends RuntimeException {
+
+        public RuntimeSQLException() {
+            super();
+        }
+
         public RuntimeSQLException(Throwable cause) { //TODO: 이전 예외까지 담아서 처리할 수 있음.굿
             super(cause);
         }
