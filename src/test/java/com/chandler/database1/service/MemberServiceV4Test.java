@@ -1,9 +1,7 @@
 package com.chandler.database1.service;
 
 import com.chandler.database1.connection.Member;
-import com.chandler.database1.repository.MemberRepository;
-import com.chandler.database1.repository.RepositoryV3;
-import com.chandler.database1.repository.RepositoryV4_1;
+import com.chandler.database1.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -45,7 +44,7 @@ class MemberServiceV4Test {
 
         @Bean
         MemberRepository memberRepository() {
-            return new RepositoryV4_1(dataSource);
+            return new RepositoryV5(dataSource);
         }
 
         @Bean
